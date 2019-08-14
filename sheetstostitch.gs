@@ -126,7 +126,7 @@ function stringify(obj_from_json, is_data) {
     const arrprops = obj_from_json.map(function(v) {return stringify(v, is_data)}).join(",");
   	return "[" + arrprops + "]";
   }
-  if (typeof obj_from_json == "object") {
+  if (typeof obj_from_json == "object" && obj_from_json != null) {
     const objprops = Object.keys(obj_from_json).map(stringifyJSONField).join(",");
   	return "{" + objprops + "}";
   }
