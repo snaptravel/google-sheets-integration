@@ -196,7 +196,7 @@ function largedoc(lastrow, lastcolumn, i, tablename, sheet, newkey){
     var url = 'https://api.stitchdata.com/v2/import/push';
     var options = {
       'method': 'post',
-      "contentType" : "application/transit+json",
+      "contentType" : "application/json",
       "payload": payload,
       "headers": {'Authorization': 'Bearer ' + api}
     };
@@ -223,7 +223,7 @@ function smalldoc(lastrow, lastcolumn, i, firstrow, tablename, sheet, newkey){
   Logger.log('Payload Rows: ' + payload_pre.length);
   var mb = roughSizeOfObject(payload) * 0.000001;
   Logger.log('Rough Payload Bytes: ' + mb );
-  Logger.log(payload);
+  //Logger.log(payload);
   var url = 'https://api.stitchdata.com/v2/import/push';
   var options = {
     'method': 'post',
