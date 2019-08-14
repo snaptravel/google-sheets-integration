@@ -113,9 +113,34 @@ function push(){
   }
 }
 
+
+function stringify(obj_from_json, is_data) {
+  function stringifyJSONField(key) {
+    if (key == "data" || is_data) {
+      return JSON.stringify(key) + ":" + stringify(obj_from_json[key], true)
+    }
+    return JSON.stringify(key) + ":" + JSON.stringify(obj_from_json[key])
+  }
+  
+  if (Array.isArray(obj_from_json)){
+    const arrprops = obj_from_json.map(function(v) {return stringify(v, is_data)}).join(",");
+  	return "[" + arrprops + "]";
+  }
+  if (typeof obj_from_json == "object") {
+    const objprops = Object.keys(obj_from_json).map(stringifyJSONField).join(",");
+  	return "{" + objprops + "}";
+  }
+  if (typeof obj_from_json == "number" && obj_from_json % 1 == 0) {
+  	return obj_from_json.toFixed(1);
+  }
+  return JSON.stringify(obj_from_json);
+}
+
 function toTransit(data){
-  var w = t.writer("json");
-  return w.write(data);
+  //var w = t.writer("json");
+  //payload = w.write(data);
+  payload = stringify(data, false);
+  return payload;
 }
 
 function insertKeys(spreadsheetdata, keys, tablename, sheet, cid){
@@ -198,11 +223,11 @@ function smalldoc(lastrow, lastcolumn, i, firstrow, tablename, sheet, newkey){
   Logger.log('Payload Rows: ' + payload_pre.length);
   var mb = roughSizeOfObject(payload) * 0.000001;
   Logger.log('Rough Payload Bytes: ' + mb );
-  //Logger.log(payload);
+  Logger.log(payload);
   var url = 'https://api.stitchdata.com/v2/import/push';
   var options = {
     'method': 'post',
-    "contentType" : "application/transit+json",
+    "contentType" : "application/json",
     "payload": payload,
     "headers": {'Authorization': 'Bearer ' + api},
     "muteHttpExceptions" : true
