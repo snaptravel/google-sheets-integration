@@ -149,11 +149,11 @@ function insertKeys(spreadsheetdata, keys, tablename, sheet, cid){
   for (var i = 0; i < arrayLength; i++) {
     //Logger.log('keys' + keys);
     var hasKeys = true;
-    for each (var key in keys) {
+    keys.forEach(function(key){
       if (spreadsheetdata[i][key] == "") {
         hasKeys = false;
       }
-    }
+    });
     if (hasKeys) {
       var record = {};
       record.client_id = parseInt(cid);
